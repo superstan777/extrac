@@ -10,31 +10,43 @@ import {
   Heading,
   Center,
   Text,
+  useToast,
 } from "@chakra-ui/react";
-import { useRef } from "react";
+import { useState } from "react";
 import { supabase } from "../client";
 import { Link, useNavigate } from "react-router-dom";
 
 export const RegisterPage = () => {
-  // const [isLoading, setIsLoading] = useState<boolean>(false); loading during promise to be done
   const navigate = useNavigate();
-  const email = useRef<string | undefined>();
-  const password = useRef<number | undefined>();
-  const confirmPassword = useRef<string | undefined>();
-
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const toast = useToast();
   const registerButtonHandler = async () => {
-    if (password.current.value !== confirmPassword.current.value) {
-      console.log("passwords not the same"); // to be done later
+    if (password !== confirmPassword) {
+      toast({
+        title: "Passwords are not the same",
+        description: "Make sure both passwords are correct",
+        status: "error",
+        duration: 3000,
+        isClosable: true,
+      });
+      return;
     }
 
     const { data, error } = await supabase.auth.signUp({
-      email: email.current.value,
-      password: password.current.value,
+      email,
+      password,
     });
 
     if (error) {
-      console.error("Error signing up:", error.message);
-      return error.message;
+      toast({
+        title: "Error crea",
+        description: "Account wasn't created. Try again later.",
+        status: "error",
+        duration: 3000,
+        isClosable: true,
+      });
     } else {
       console.log(data);
       navigate("/login");
@@ -59,7 +71,10 @@ export const RegisterPage = () => {
               >
                 E
               </InputLeftElement>
-              <Input placeholder="Enter email" ref={email} />
+              <Input
+                placeholder="Enter email"
+                onChange={(e) => setEmail(e.target.value)}
+              />
             </InputGroup>
             <InputGroup>
               <InputLeftElement
@@ -71,7 +86,7 @@ export const RegisterPage = () => {
               </InputLeftElement>
               <Input
                 placeholder="Enter password"
-                ref={password}
+                onChange={(e) => setPassword(e.target.value)}
                 type="password"
               />
             </InputGroup>
@@ -85,7 +100,7 @@ export const RegisterPage = () => {
               </InputLeftElement>
               <Input
                 placeholder="Confirm password"
-                ref={confirmPassword}
+                onChange={(e) => setConfirmPassword(e.target.value)}
                 type="password"
               />
             </InputGroup>

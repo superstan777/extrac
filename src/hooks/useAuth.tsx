@@ -1,16 +1,28 @@
 import { createContext, useContext, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
-
 import { useSessionStorage } from "./useSessionStorage";
+import { AuthInterface } from "../interfaces";
 
-const AuthContext = createContext();
+const AuthContext = createContext({
+  user: "",
+  login: async (user: string) => {
+    console.log(`Logging in user: ${user}`);
+  },
+  logout: () => {
+    console.log("Logging out user");
+  },
+});
 
-export const AuthProvider = ({ children }) => {
+interface Props {
+  children: JSX.Element;
+}
+
+export const AuthProvider: React.FC<Props> = ({ children }) => {
   const [user, setUser] = useSessionStorage("user", null);
 
   const navigate = useNavigate();
 
-  const login = async (user) => {
+  const login = async (user: string) => {
     setUser(user);
     navigate("/");
   };
@@ -20,7 +32,7 @@ export const AuthProvider = ({ children }) => {
     navigate("/", { replace: true });
   };
 
-  const value = useMemo(
+  const value = useMemo<AuthInterface>(
     () => ({
       user,
       login,

@@ -6,10 +6,6 @@ import {
   StatArrow,
   Card,
   Skeleton,
-  Center,
-  VStack,
-  AbsoluteCenter,
-  Box,
   Flex,
 } from "@chakra-ui/react";
 import {
@@ -25,15 +21,17 @@ export const Stats = () => {
   const { user } = useAuth();
   const [isLoaded, setIsLoaded] = useState<boolean>(false);
 
-  const [spent, setSpent] = useState();
-  const [percentageValue, setPercentageValue] = useState();
+  const [spent, setSpent] = useState<number | null | undefined>();
+  const [percentageValue, setPercentageValue] = useState<
+    number | null | undefined
+  >();
   const [isPercentageValueVisible, setIsPercentageValueVisible] =
     useState<boolean>(false);
   const [stateArrow, setStateArrow] = useState<
     "increase" | "decrease" | null
   >();
-
-  const [yearSpent, setYearSpent] = useState();
+  console.log(spent);
+  const [yearSpent, setYearSpent] = useState<number | null | undefined>();
 
   const spentHandler = async () => {
     const value = await fetchCurrentMonthExpenseValue(user);
@@ -56,7 +54,7 @@ export const Stats = () => {
     }
 
     const difference = currentMonth - lastMonth;
-    const percentage = ((currentMonth - lastMonth) / lastMonth) * 100;
+    const percentage: number = ((currentMonth - lastMonth) / lastMonth) * 100;
 
     if (currentMonth === lastMonth) {
       setIsPercentageValueVisible(true);
@@ -65,7 +63,7 @@ export const Stats = () => {
       return;
     }
 
-    setPercentageValue(Math.abs(percentage.toFixed(2)));
+    setPercentageValue(Math.abs(Number(percentage.toFixed(2))));
     setStateArrow(difference > 0 ? "increase" : "decrease");
     setIsPercentageValueVisible(true);
   };
@@ -103,7 +101,6 @@ export const Stats = () => {
         alignContent="center"
         alignItems="center"
         justifyContent="center"
-        // backgroundColor="red"
       >
         <Skeleton
           isLoaded={isLoaded}
@@ -146,8 +143,6 @@ export const Stats = () => {
               5% more than last month
             </StatHelpText>
           </Stat>
-
-          {/* </AbsoluteCenter> */}
         </Skeleton>
       </Flex>
     </Card>

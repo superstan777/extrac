@@ -18,7 +18,7 @@ import {
 } from "@chakra-ui/react";
 import { CheckIcon } from "@chakra-ui/icons";
 import { supabase } from "../client";
-import { Expense } from "../interfaces";
+import { ExpenseInterface } from "../interfaces";
 import {
   ArrowBackIcon,
   ArrowForwardIcon,
@@ -34,7 +34,7 @@ export const ExpenseTable = () => {
   const { user } = useAuth();
 
   const [isLoaded, setIsLoaded] = useState<boolean>(false);
-  const [list, setList] = useState<Expense[] | undefined>(undefined);
+  const [list, setList] = useState<ExpenseInterface[] | undefined>(undefined);
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 4;
 
@@ -61,7 +61,10 @@ export const ExpenseTable = () => {
 
   const listHandler = async () => {
     const array = await fetchAllExpenses(user);
-    setList(array);
+    if (array) {
+      setList(array);
+      console.log(array);
+    }
   };
 
   const deleteHandler = (id: number) => {
@@ -74,7 +77,7 @@ export const ExpenseTable = () => {
       const firstIndex = lastIndex - itemsPerPage;
       const currentItems = list.slice(firstIndex, lastIndex);
 
-      return currentItems.map((obj: Expense) => (
+      return currentItems.map((obj: ExpenseInterface) => (
         <Tr key={obj.id}>
           <Td>{obj.name}</Td>
           <Td isNumeric>{obj.value}</Td>

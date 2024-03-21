@@ -14,7 +14,7 @@ import {
   Heading,
   Center,
 } from "@chakra-ui/react";
-import { useRef, useState } from "react";
+import { useState } from "react";
 import { addExpense } from "../utility/databaseActions";
 import { useAuth } from "../hooks/useAuth";
 
@@ -23,25 +23,18 @@ export const ExpenseForm = () => {
 
   // const [isLoading, setIsLoading] = useState<boolean>(false); loading during promise to be done
   const [split, setSplit] = useState("true");
-  const expense = useRef<string | undefined>();
-  const value = useRef<number | undefined>();
-  const date = useRef<string | undefined>();
+  const [expense, setExpense] = useState("");
+  const [value, setValue] = useState(null);
+  const [date, setDate] = useState("");
 
   const toast = useToast();
 
   const formHandler = async () => {
     try {
-      // Execute the asynchronous operation
-      await addExpense(
-        expense.current.value,
-        value.current.value,
-        date.current.value,
-        JSON.parse(split),
-        user
-      );
-      expense.current.value = "";
-      value.current.value = "";
-      // If the promise is fulfilled (no error occurred), show the toast
+      await addExpense(expense, value, date, JSON.parse(split), user);
+      setExpense("");
+      setValue(null);
+
       toast({
         title: "Expense added",
         description: "Database has been updated with new record.",
@@ -50,9 +43,8 @@ export const ExpenseForm = () => {
         isClosable: true,
       });
     } catch (error) {
-      // If an error occurs during the asynchronous operation, handle it here
       console.error("Error adding expense:", error);
-      // Show an error toast
+
       toast({
         title: "Failed to add expense",
         description: "Make sure all fields are filled correctly",
@@ -80,7 +72,10 @@ export const ExpenseForm = () => {
             >
               E
             </InputLeftElement>
-            <Input placeholder="Enter expense" ref={expense} />
+            <Input
+              placeholder="Enter expense"
+              onChange={(e) => setExpense(e.target.value)}
+            />
           </InputGroup>
           <InputGroup>
             <InputLeftElement
@@ -90,7 +85,11 @@ export const ExpenseForm = () => {
             >
               $
             </InputLeftElement>
-            <Input placeholder="Enter amount" ref={value} />
+            <Input
+              placeholder="Enter amount"
+              type="number"
+              onChange={(e) => setValue(e.target.value)}
+            />
           </InputGroup>
           <InputGroup>
             <InputLeftElement
@@ -100,7 +99,10 @@ export const ExpenseForm = () => {
             >
               D
             </InputLeftElement>
-            <Input placeholder="Enter date" ref={date} />
+            <Input
+              placeholder="Enter date"
+              onChange={(e) => setDate(e.target.value)}
+            />
           </InputGroup>
 
           <Center>

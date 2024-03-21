@@ -10,33 +10,66 @@ import {
   Heading,
   Center,
   Text,
+  useToast,
 } from "@chakra-ui/react";
-import { useRef } from "react";
+import { useState } from "react";
 import { supabase } from "../client";
 import { Link } from "react-router-dom";
 import { useAuth } from "../hooks/useAuth";
 
 export const LoginPage = () => {
-  // const [isLoading, setIsLoading] = useState<boolean>(false); loading during promise to be done
   const { login } = useAuth();
-  const email = useRef<string | undefined>();
-  const password = useRef<number | undefined>();
+  // const [isEmailEmpty, setIsEmailEmpty] = useState<boolean>(false);
+  // const [isPasswordEmpty, setIsPasswordEmpty] = useState<boolean>(false);
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+
+  const toast = useToast();
+
+  // const isEmpty = (string: string): boolean => {
+  //   return string === "" ? true : false;
+  // };
 
   const loginButtonHandler = async () => {
+    // if (isEmpty(email.current.value)) {
+    //   setIsEmailEmpty(true);
+    // }
+
+    // if (isEmpty(password.current.value)) {
+    //   setIsPasswordEmpty(true);
+    // }
+
+    // if (isEmailEmpty || isPasswordEmpty) {
+    //   return;
+    // }
+
     const { data, error } = await supabase.auth.signInWithPassword({
-      email: email.current.value,
-      password: password.current.value,
+      email,
+      password,
     });
     if (error) {
       console.error("Error signing in:", error.message);
+      toast({
+        title: "Invalid credentials",
+        description: "Make sure email and passwords are correct",
+        status: "error",
+        duration: 2000,
+        isClosable: true,
+      });
+
       return error.message;
     } else {
-      console.log(data.user.id);
-      await login(data.user.id);
-      // return data.user;
+      await login(data.user.id).then(() =>
+        toast({
+          title: "Welcome back!",
+          description: "Successfully logged in.",
+          status: "success",
+          duration: 2000,
+          isClosable: true,
+        })
+      );
     }
   };
-
   //error border to be done https://chakra-ui.com/docs/components/input/usage
 
   return (
@@ -55,7 +88,12 @@ export const LoginPage = () => {
               >
                 E
               </InputLeftElement>
-              <Input placeholder="Enter email" ref={email} />
+              <Input
+                placeholder="Enter email"
+                onChange={(e) => setEmail(e.target.value)}
+                // isInvalid={isEmailEmpty}
+                errorBorderColor="red.300"
+              />
             </InputGroup>
             <InputGroup>
               <InputLeftElement
@@ -67,8 +105,10 @@ export const LoginPage = () => {
               </InputLeftElement>
               <Input
                 placeholder="Enter password"
-                ref={password}
                 type="password"
+                // isInvalid={isPasswordEmpty}
+                errorBorderColor="red.300"
+                onChange={(e) => setPassword(e.target.value)}
               />
             </InputGroup>
             <Button colorScheme="blue" onClick={loginButtonHandler}>

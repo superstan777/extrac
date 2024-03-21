@@ -1,6 +1,7 @@
 import { supabase } from "../client";
 
 export const fetchAllExpenses = async (uuid: string) => {
+  // sam se otypował - na początek daj typescryptowi podziałać zanim sam dasz typy
   try {
     const { data } = await supabase
       .from("expenses")
@@ -10,12 +11,13 @@ export const fetchAllExpenses = async (uuid: string) => {
     return data;
   } catch (e) {
     console.log(e);
+    return;
   }
 };
 
 export const addExpense = async (
   expense: string,
-  value: number,
+  value: number | null,
   date: string,
   split: boolean,
   uuid: string
@@ -47,6 +49,7 @@ export const fetchCurrentMonthExpenseValue = async (uuid: string) => {
       .lte("date", endOfMonth.toDateString()); // Less than or equal to end of month
 
     const valuesArray = data?.map((obj) => obj.value);
+
     const sum = valuesArray.reduce((acc, curr) => acc + curr, 0);
 
     return sum;
