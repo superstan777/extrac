@@ -10,7 +10,7 @@ import { LineChart, Line, XAxis, YAxis, Tooltip } from "recharts";
 import { fetchLastThreeMonthsExpenses } from "../utility/databaseActions";
 import { useState, useEffect } from "react";
 import { supabase } from "../client";
-import { GraphDataInterface } from "../interfaces";
+// import { GraphDataInterface } from "../interfaces";
 import { NoDataComponent } from "./NoDataComponent";
 import { useAuth } from "../hooks/useAuth";
 
@@ -22,14 +22,10 @@ interface ValueDateExpense {
 export const Graph = () => {
   const { user } = useAuth();
   const [isLoaded, setIsLoaded] = useState<boolean>(false);
-  const [graphData, setGraphData] = useState<GraphDataInterface[] | undefined>(
-    undefined
-  );
+  const [graphData, setGraphData] = useState<any>(undefined);
 
   //formatowanie
-  const formatLastThreeMonths = (
-    array: ValueDateExpense[]
-  ): GraphDataInterface[] => {
+  const formatLastThreeMonths = (array: ValueDateExpense[]) => {
     const monthNames = [
       "January",
       "February",
