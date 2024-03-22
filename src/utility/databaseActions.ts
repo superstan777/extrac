@@ -143,7 +143,7 @@ export const fetchLastSixMonthsExpenseValue = async (uuid: string) => {
       .gte("date", startDate.toDateString()) // Greater than or equal to start of last month
       .lte("date", endDate.toDateString()); // Less than or equal to end of last month
 
-    console.log(data);
+    // console.log(data);
     //   const valuesArray = data?.map((obj) => obj.value);
     //   const sum = valuesArray.reduce((acc, curr) => acc + curr, 0);
 

@@ -63,7 +63,7 @@ export const ExpenseTable = () => {
     const array = await fetchAllExpenses(user);
     if (array) {
       setList(array);
-      console.log(array);
+      // console.log(array);
     }
   };
 

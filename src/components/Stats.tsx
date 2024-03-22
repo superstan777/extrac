@@ -30,7 +30,7 @@ export const Stats = () => {
   const [stateArrow, setStateArrow] = useState<
     "increase" | "decrease" | null
   >();
-  console.log(spent);
+
   const [yearSpent, setYearSpent] = useState<number | null | undefined>();
 
   const spentHandler = async () => {
@@ -53,19 +53,21 @@ export const Stats = () => {
       return;
     }
 
-    const difference = currentMonth - lastMonth;
-    const percentage: number = ((currentMonth - lastMonth) / lastMonth) * 100;
+    if (currentMonth && lastMonth) {
+      const difference = currentMonth - lastMonth;
+      const percentage: number = ((currentMonth - lastMonth) / lastMonth) * 100;
 
-    if (currentMonth === lastMonth) {
+      if (currentMonth === lastMonth) {
+        setIsPercentageValueVisible(true);
+        setPercentageValue(null);
+        setStateArrow(null); // Remove arrow if values are the same
+        return;
+      }
+
+      setPercentageValue(Math.abs(Number(percentage.toFixed(2))));
+      setStateArrow(difference > 0 ? "increase" : "decrease");
       setIsPercentageValueVisible(true);
-      setPercentageValue(null);
-      setStateArrow(null); // Remove arrow if values are the same
-      return;
     }
-
-    setPercentageValue(Math.abs(Number(percentage.toFixed(2))));
-    setStateArrow(difference > 0 ? "increase" : "decrease");
-    setIsPercentageValueVisible(true);
   };
 
   useEffect(() => {

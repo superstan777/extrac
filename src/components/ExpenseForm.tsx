@@ -24,7 +24,7 @@ export const ExpenseForm = () => {
   // const [isLoading, setIsLoading] = useState<boolean>(false); loading during promise to be done
   const [split, setSplit] = useState("true");
   const [expense, setExpense] = useState("");
-  const [value, setValue] = useState(null);
+  const [value, setValue] = useState<number | null>(null);
   const [date, setDate] = useState("");
 
   const toast = useToast();
@@ -88,7 +88,7 @@ export const ExpenseForm = () => {
             <Input
               placeholder="Enter amount"
               type="number"
-              onChange={(e) => setValue(e.target.value)}
+              onChange={(e) => setValue(Number(e.target.value))}
             />
           </InputGroup>
           <InputGroup>
