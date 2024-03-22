@@ -106,7 +106,7 @@ export const Graph = () => {
     <Card h="100%">
       <Skeleton
         isLoaded={isLoaded}
-        fadeDuration={1}
+        fadeDuration={0.5}
         startColor="white"
         endColor="white"
       >

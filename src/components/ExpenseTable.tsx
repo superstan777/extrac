@@ -111,7 +111,7 @@ export const ExpenseTable = () => {
     <Card h="100%">
       <Skeleton
         isLoaded={isLoaded}
-        fadeDuration={4}
+        fadeDuration={0.5}
         startColor="white"
         endColor="white"
       >
