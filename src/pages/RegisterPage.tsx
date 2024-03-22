@@ -34,21 +34,27 @@ export const RegisterPage = () => {
       return;
     }
 
-    const { data, error } = await supabase.auth.signUp({
+    const { error } = await supabase.auth.signUp({
       email,
       password,
     });
 
     if (error) {
       toast({
-        title: "Error crea",
+        title: "Error",
         description: "Account wasn't created. Try again later.",
         status: "error",
         duration: 3000,
         isClosable: true,
       });
     } else {
-      console.log(data);
+      toast({
+        title: "Account has been created!",
+        description: "Use your credentials to log in",
+        status: "success",
+        duration: 3000,
+        isClosable: true,
+      });
       navigate("/login");
     }
   };
