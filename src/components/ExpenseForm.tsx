@@ -24,16 +24,16 @@ export const ExpenseForm = () => {
   // const [isLoading, setIsLoading] = useState<boolean>(false); loading during promise to be done
   const [split, setSplit] = useState("true");
   const [expense, setExpense] = useState("");
-  const [value, setValue] = useState<number | null>(null);
+  const [value, setValue] = useState("");
   const [date, setDate] = useState("");
 
   const toast = useToast();
 
   const formHandler = async () => {
     try {
-      await addExpense(expense, value, date, JSON.parse(split), user);
+      await addExpense(expense, Number(value), date, JSON.parse(split), user);
       setExpense("");
-      setValue(null);
+      setValue("");
 
       toast({
         title: "Expense added",
@@ -75,6 +75,7 @@ export const ExpenseForm = () => {
             <Input
               placeholder="Enter expense"
               onChange={(e) => setExpense(e.target.value)}
+              value={expense}
             />
           </InputGroup>
           <InputGroup>
@@ -88,7 +89,8 @@ export const ExpenseForm = () => {
             <Input
               placeholder="Enter amount"
               type="number"
-              onChange={(e) => setValue(Number(e.target.value))}
+              onChange={(e) => setValue(e.target.value)}
+              value={value}
             />
           </InputGroup>
           <InputGroup>
@@ -102,6 +104,7 @@ export const ExpenseForm = () => {
             <Input
               placeholder="Enter date"
               onChange={(e) => setDate(e.target.value)}
+              value={date}
             />
           </InputGroup>
 
