@@ -8,23 +8,23 @@ export const DashboardPage = () => {
   return (
     <>
       <Grid
-        h="90vh"
-        maxH="90vh"
-        templateRows="repeat(2, 1fr)"
         templateColumns="repeat(3, 1fr)"
+        templateRows="repeat(2, 1fr)"
         gap={4}
+        height={{ base: "100%", md: "100vh" }}
+        padding={{ base: 0, md: "5" }}
       >
-        <GridItem rowSpan={1} colSpan={1}>
+        <GridItem colSpan={{ base: 3, md: 1 }}>
           <ExpenseForm />
         </GridItem>
 
-        <GridItem colSpan={2}>
+        <GridItem colSpan={{ base: 3, md: 2 }}>
           <Graph />
         </GridItem>
-        <GridItem rowSpan={1} colSpan={1}>
+        <GridItem colSpan={{ base: 3, md: 1 }}>
           <Stats />
         </GridItem>
-        <GridItem colSpan={2}>
+        <GridItem colSpan={{ base: 3, md: 2 }}>
           <ExpenseTable />
         </GridItem>
       </Grid>

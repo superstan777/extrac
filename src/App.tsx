@@ -6,6 +6,9 @@ import { RegisterPage } from "./pages/RegisterPage";
 import { ProtectedRoute } from "./components/ProtectedRoute";
 import { AuthProvider } from "./hooks/useAuth";
 
+// REDIRECT TO / IF LOGGED IN
+// PASSWORD HASHING
+
 function App() {
   return (
     <AuthProvider>

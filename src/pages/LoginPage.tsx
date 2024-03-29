@@ -73,8 +73,8 @@ export const LoginPage = () => {
   //error border to be done https://chakra-ui.com/docs/components/input/usage
 
   return (
-    <Center>
-      <Card h="100%" w="40%">
+    <Center h="100vh">
+      <Card w={[300, 400]}>
         <CardHeader>
           <Heading size="md">Log in</Heading>
         </CardHeader>
